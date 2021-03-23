@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { DOMAttributes, useState } from 'react';
 import '../css/Square.css';
 
-class Square extends React.Component {
+interface ISquare {
+  value?: string | null | undefined
+  onClick: any
+}
+
+class Square extends React.PureComponent<ISquare>  {  
     render() {
       return (
-        <button className="square">
-          {/* TODO */}
+        <button onClick={ this.props.onClick } className="square">
+          {this.props.value}
         </button>
       );
     }
