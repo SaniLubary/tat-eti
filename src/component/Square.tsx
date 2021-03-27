@@ -1,19 +1,17 @@
-import React, { DOMAttributes, useState } from 'react';
+import React, { ReactElement } from 'react';
+import PropTypes, { InferProps } from "prop-types";
 import '../css/Square.css';
 
-interface ISquare {
-  value?: string | null | undefined
-  onClick: any
+Square.propTypes = {
+  value: PropTypes.string,
+  onClick: PropTypes.any.isRequired
 }
 
-class Square extends React.PureComponent<ISquare>  {  
-    render() {
-      return (
-        <button onClick={ this.props.onClick } className="square">
-          {this.props.value}
-        </button>
-      );
-    }
-  }
-  
-export default Square;
+function Square({ value, onClick }: InferProps<typeof Square.propTypes> ): ReactElement 
+{
+  return (<button onClick={ onClick } className="square">
+    { value }
+  </button>)
+}
+
+export default Square
