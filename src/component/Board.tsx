@@ -3,49 +3,51 @@ import PropTypes, { InferProps } from "prop-types";
 import Square from './Square';
 
 Board.propTypes = {
-  iSquares: PropTypes.arrayOf(PropTypes.oneOfType([
+  squares: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string.isRequired,
     PropTypes.oneOf([null]).isRequired
   ])).isRequired,
 
-  iCrossTurn: PropTypes.bool.isRequired,
+  crossTurn: PropTypes.bool.isRequired,
   
-  iWinner: PropTypes.oneOfType([
+  winner: PropTypes.oneOfType([
     PropTypes.oneOf(['X', 'O'])
   ])
 }
 
 Board.defaultProps = {
-  iSquares: Array(9).fill(null),
-  iCrossTurn: true
+  squares: Array(9).fill(null),
+  crossTurn: true
 }
 
-function Board({ iSquares, iCrossTurn, iWinner }: InferProps<typeof Board.propTypes> ): ReactElement
+function Board({ squares, crossTurn, winner }: InferProps<typeof Board.propTypes> ): ReactElement
 {
-  const [squares, setSquares] = useState(iSquares),
-        [crossTurn, setCrossTurn] = useState(iCrossTurn),
-        [winner, setWinner] = useState(iWinner);
+  const [state_squares, setSquares] = useState(squares),
+        [state_crossTurn, setCrossTurn] = useState(crossTurn),
+        [state_winner, setWinner] = useState(winner);
 
   const renderSquare = (i: number) => {
     return (
-      <Square value={squares[i]} onClick={() => handleClick(i)} />
+      <Square value={state_squares[i]} onClick={() => handleSquareClick(i)} />
     ); 
   }
 
-  const handleClick = (i: number) => {
-    const squaresArr = squares.slice();
+  /**
+   * @param i Square's id
+   */
+  const handleSquareClick = (i: number) => {
+    const squaresArr = state_squares.slice();
     
     if (squaresArr[i] == null) {
-      squaresArr[i] = crossTurn?'X':'O';
-      const isCrossTurn = crossTurn?false:true;
+      squaresArr[i] = state_crossTurn?'X':'O';
       setSquares(squaresArr);
-      setCrossTurn(isCrossTurn);
+      setCrossTurn(!state_crossTurn);
     }
     
-    const player = checkWinner(squaresArr)
-    if (player) {
+    const winner = checkWinner(squaresArr)
+    if (winner) {
       setSquares(Array(9).fill(null));
-      setCrossTurn(crossTurn);
+      setCrossTurn(true);
       setWinner(winner);
     }
   }
@@ -58,7 +60,7 @@ function Board({ iSquares, iCrossTurn, iWinner }: InferProps<typeof Board.propTy
           allLines = [line1, line2, line3];
 
     // horizontal line win case
-    const checkLine = (line: Array<string|null|undefined>) => line.every( (square) => line[0] && line[0] === square );
+    const checkLine = (line: Array<string|null|undefined>) => line.every( (state_square) => line[0] && line[0] === state_square );
     for(const line of allLines) {
       if(checkLine(line)) {
         console.log('horizontal')
@@ -87,7 +89,7 @@ function Board({ iSquares, iCrossTurn, iWinner }: InferProps<typeof Board.propTy
 
   return (
     <div>
-      <div className="status">Next player: {crossTurn?'X':'O'}</div>
+      <div className="status">Next player: {state_crossTurn?'X':'O'}</div>
       <div className="board">
         <div className="board-row">
           {renderSquare(0)}
