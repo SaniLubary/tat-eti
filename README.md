@@ -1,5 +1,5 @@
 # ▪▪▪From React's main page Tictactoe guide▫▫▫
-React's main page TicTacToe tutorial and a sh** ton of TypeScript research to adapt the guide to it.
+React's main page TicTacToe tutorial and a sh** ton of learning Typescript to adapt the guide to it.
 
 ### Getting Started
 _This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)._
